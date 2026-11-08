@@ -6,17 +6,20 @@ on:
     branches:
       - '**'
     paths:
-      - 'Dockerfile'
-      - 'index.js'
-      - 'package.json'
+      - Dockerfile
+      - index.js
+      - package.json
+
   pull_request:
     branches:
       - '**'
+
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
