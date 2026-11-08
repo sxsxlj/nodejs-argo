@@ -1,14 +1,17 @@
+```yaml
 name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - '**'
     paths:
       - 'Dockerfile'
       - 'index.js'
       - 'package.json'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '**'
   workflow_dispatch:
 
 jobs:
@@ -36,13 +39,14 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository_owner }}/gdzjok:888
+            ghcr.io/${{ github.repository_owner }}/gdzjok:${{ github.ref_name }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=HTTP Server
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
           cache-to: type=gha,mode=max
+```
